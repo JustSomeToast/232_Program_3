@@ -10,6 +10,6 @@ package pkg232graphtraversal;
  *
  * @author Tyler
  */
-public class FloydWarshallAlgorthim {
+public class GraphAlgorithms {
     
 }
