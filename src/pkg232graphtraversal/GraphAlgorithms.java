@@ -14,16 +14,17 @@ import java.nio.file.*;
 public class GraphAlgorithms {
 
     private char[] vertices; //vertex vertices
-    private int[][] UWCmatrix; //UWC UWCmatrix, stored as ints
+    private int[][] primkrusMatrix; //UWC primkrusMatrix, stored as ints
+    private int[][] floydMatrix;
 
-    public void readAdjacencyMatrix() { //reads in an adjacency UWCmatrix for prims and kruskal algorithms
+    public void readUWCMatrix() { //reads in an adjacency primkrusMatrix for prims and kruskal algorithms
 
         Path in = Paths.get("UWCMatrix.csv");
 
         try (BufferedReader reader = Files.newBufferedReader(in)) { //reader
             String line; //the line to be read
             
-            int i = 1; //vars for checking current line, and indexing values into UWCmatrix
+            int i = 1; //vars for checking current line, and indexing values into primkrusMatrix
             int j = 0, k = 0;
             
             while ((line = reader.readLine()) != null) {
@@ -31,7 +32,7 @@ public class GraphAlgorithms {
                 String inLine[] = line.split(",");
                 
                 if (i == 1) { //if we are on the first line
-                    UWCmatrix = new int[inLine.length][inLine.length]; //initialize both arrays
+                    primkrusMatrix = new int[inLine.length][inLine.length]; //initialize both arrays
                     vertices = new char[inLine.length];
 
                     int b = 0;
@@ -49,7 +50,7 @@ public class GraphAlgorithms {
                             val = Integer.parseInt(c); //we have an edge
                         }
 
-                        UWCmatrix[j][k] = val; //index the value into our UWCmatrix
+                        primkrusMatrix[j][k] = val; //index the value into our primkrusMatrix
                         k++;
                     }
                     k = 0;
@@ -57,7 +58,7 @@ public class GraphAlgorithms {
                 }
                 i++;
             }
-            printMatrix(); //print the UWCmatrix
+            printPKMatrix(); //print the primkrusMatrix
         } catch (IOException e) {
             System.err.format("An IOException occured when reading in from: " + in
                     + '\n' + "Error: " + e);
@@ -88,15 +89,19 @@ public class GraphAlgorithms {
     public void printMST(int p[], int mat[][]){ //fucntion for printing a MST
         int mstWeight=0;
         
-        System.out.println("\nEdge  Weight");
+        System.out.println("\nMST for the matrix");
+        System.out.println("-------------------");
+        System.out.println("Edge  Weight");
         for(int i=1; i<mat.length; i++){
             System.out.println(getVertex(p[i]) + "" + getVertex(i) + "    "+mat[i][p[i]]);
             mstWeight += mat[i][p[i]];
         }
-        System.out.println("\nTotal MST Weight = " + mstWeight);
+        System.out.println("-------------------");
+        System.out.println("Total MST Weight = " + mstWeight);
     }
     
     public void prim(int mat[][]) { //prim's algorithm
+            System.out.println("Running Prim's Algorithm...");
             int v = mat.length;  //number of vertices in our matrix
              
             int mst[] = new int[v]; //stores the MST
@@ -145,10 +150,10 @@ public class GraphAlgorithms {
     }
     
     public int[][] getMatrix(){
-        return UWCmatrix;
+        return primkrusMatrix;
     }
 
-    public void printMatrix() {
+    public void printPKMatrix() { //prints the matrix used for prims and kruskals algorithm
         System.out.println("---The UWC matrix---");
         
         for (int k = 0; k < vertices.length; k++) {
@@ -156,15 +161,16 @@ public class GraphAlgorithms {
         }
         System.out.println();
 
-        for (int i = 0; i < UWCmatrix.length; i++) {
-            for (int j = 0; j < UWCmatrix[i].length; j++) {
-                if (UWCmatrix[i][j] == Integer.MAX_VALUE) {
+        for (int i = 0; i < primkrusMatrix.length; i++) {
+            for (int j = 0; j < primkrusMatrix[i].length; j++) {
+                if (primkrusMatrix[i][j] == Integer.MAX_VALUE) {
                     System.out.print("∞" + "  ");
                 } else {
-                    System.out.print(UWCmatrix[i][j] + "  ");
+                    System.out.print(primkrusMatrix[i][j] + "  ");
                 }
             }
             System.out.println();
         }
+        System.out.println();
     }
 }

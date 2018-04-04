@@ -16,8 +16,10 @@ public class Main {
 
     public static void main(String[] args) {
         GraphAlgorithms grapher = new GraphAlgorithms();
-        grapher.readAdjacencyMatrix();
+        grapher.readUWCMatrix();
         grapher.prim(grapher.getMatrix());
+        
+        
     }
     
 }
