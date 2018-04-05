@@ -1,6 +1,6 @@
 /*
  * Author: Tyler Gentry, Gavin Austin
- * Date: 4/2/2018                
+ * Date: 4/10/2018                
  * Overview: Implementation of Prim's and Kruskal's algorithms for MST of a graph
  * and implementation of Floyd-Warshall's algorithm in weighted graphs. Reads in from 
  * an input file.
@@ -8,18 +8,13 @@
  */
 package pkg232graphtraversal;
 
-/**
- *
- * @author Tyler
- */
 public class Main {
 
     public static void main(String[] args) {
         GraphAlgorithms grapher = new GraphAlgorithms();
         grapher.readUWCMatrix();
         grapher.prim(grapher.getMatrix());
-        
-        
+        grapher.kruskals(grapher.getMatrix());
     }
     
 }
