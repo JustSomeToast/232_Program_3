@@ -107,7 +107,8 @@ public class GraphAlgorithms {
                 }
                 i++;
             }
-            printFloydMatrix();
+            System.out.println("\n---The Floyd matrix---");
+            printFloydMatrix(floydMatrix);
         } catch (IOException e) {
             System.err.format("An IOException occured when reading in from: " + in
                     + '\n' + "Error: " + e);
@@ -229,7 +230,28 @@ public class GraphAlgorithms {
         System.out.println("Total MST Weight = " + totalWeight);
     }
 
-    public void floydWarshall() {
+    public void floydWarshall(int mat[][]) {
+        int weights[][] = new int[mat.length][mat.length];
+        int len = mat.length;
+        int inf = Integer.MAX_VALUE;
+
+        for (int m = 0; m < len; m++) {
+            for (int n = 0; n < len; n++) {
+                weights[m][n] = mat[m][n];
+            }
+        }
+
+        for (int k = 0; k < len; k++) {
+            for (int i = 0; i < len; i++) {
+                for (int j = 0; j < len; j++) {
+                    if (weights[i][k] != inf && weights[k][j] != inf && weights[i][j] > weights[i][k] + weights[k][j]) {
+                        weights[i][j] = weights[i][k] + weights[k][j];
+                        printFloydMatrix(weights);
+                    }
+
+                }
+            }
+        }
 
     }
 
@@ -262,22 +284,19 @@ public class GraphAlgorithms {
         System.out.println();
     }
 
-    public void printFloydMatrix() {
-        System.out.println("---The Floyd matrix---");
-
+    public void printFloydMatrix(int mtp[][]) {
         for (int k = 0; k < fwvertices.length; k++) {
             System.out.print("  " + fwvertices[k] + " ");
         }
         System.out.println();
-
-        for (int i = 0; i < floydMatrix.length; i++) {
+        for (int i = 0; i < mtp.length; i++) {
             System.out.print(fwvertices[i] + " ");
-            for (int j = 0; j < floydMatrix[i].length; j++) {
+            for (int j = 0; j < mtp[i].length; j++) {
 
-                if (floydMatrix[i][j] == Integer.MAX_VALUE) {
+                if (mtp[i][j] == Integer.MAX_VALUE) {
                     System.out.print("∞" + "  ");
                 } else {
-                    System.out.print(floydMatrix[i][j] + "  ");
+                    System.out.print(mtp[i][j] + "  ");
                 }
             }
             System.out.println();

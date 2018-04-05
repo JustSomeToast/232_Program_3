@@ -16,6 +16,7 @@ public class Main {
         grapher.prim(grapher.getPKMatrix());
         grapher.kruskals(grapher.getPKMatrix());
         grapher.readFloydMatrix();
+        grapher.floydWarshall(grapher.getFloydMatrix());
         
     }
     
