@@ -166,7 +166,9 @@ public class GraphAlgorithms {
             }
 
             //check that including edge doesn't cause circuit
-            if (start != end) {
+            int x = start;
+            int y = end;
+            if (x != y) {
                 edges++;
                 totalWeight += min;
                 System.out.print(vertices[start]);
