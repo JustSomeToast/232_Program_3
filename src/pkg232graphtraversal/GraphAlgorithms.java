@@ -169,7 +169,7 @@ public class GraphAlgorithms {
         mst[0] = -1; //root of MST
 
         for (int k = 0; k < v - 1; k++) {
-            int m = minVertKey(vertKeys, treeSet); //find our next vertex not yet visited
+            int m = minVertKey(vertKeys, treeSet); //
 
             treeSet[m] = true; //add the vertex to the visited tree
 
