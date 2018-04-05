@@ -66,7 +66,11 @@ public class GraphAlgorithms {
 
     }
 
+<<<<<<< HEAD
     public int minVertKey(int k[], boolean t[]) { //finds the minimum weighted, unvisited edge and returns it
+=======
+    public int minVertKey(int k[], boolean t[]){ //finds the minimum weighted, unvisited edge and returns it 
+>>>>>>> 0844aeb4929239163c387834fd49c8daf52e4bc7
         int min = Integer.MAX_VALUE;
         int minDex = -1;
 
