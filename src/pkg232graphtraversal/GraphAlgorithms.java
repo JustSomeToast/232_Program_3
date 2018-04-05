@@ -176,7 +176,7 @@ public class GraphAlgorithms {
             for (int j = 0; j < v; j++) {
                 //if we have an edge, the vertex is not in our visited tree, and the edge is smaller than other found edges
                 if (mat[m][j] != Integer.MAX_VALUE && treeSet[j] == false
-                        && mat[m][j] < vertKeys[j]) {
+                        && mat[m][j] < vertKeys[j]) {   
                     mst[j] = m;
                     vertKeys[j] = mat[m][j];
                 }
