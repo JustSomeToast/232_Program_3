@@ -15,7 +15,7 @@ public class GraphAlgorithms {
 
     private char[] pkvertices; // prim/kruskal vertex vertices
     private int[][] primkrusMatrix; //UWC primkrusMatrix, stored as ints
-    private char[] fwvertices; 
+    private char[] fwvertices;
     private int[][] floydMatrix;
 
     public void readUWCMatrix() { //reads in an adjacency primkrusMatrix for prims and kruskal algorithms
@@ -66,11 +66,10 @@ public class GraphAlgorithms {
         }
 
     }
-    
-    public void readFloydMatrix(){
+
+    public void readFloydMatrix() {
         Path in = Paths.get("floydMatrix.csv");
-        
-        
+
         try (BufferedReader reader = Files.newBufferedReader(in)) { //reader
             String line; //the line to be read
 
@@ -108,15 +107,15 @@ public class GraphAlgorithms {
                 }
                 i++;
             }
+            printFloydMatrix();
         } catch (IOException e) {
             System.err.format("An IOException occured when reading in from: " + in
                     + '\n' + "Error: " + e);
         }
     }
 
-
     public int minVertKey(int k[], boolean t[]) { //finds the minimum weighted, unvisited edge and returns it
-        
+
         int min = Integer.MAX_VALUE;
         int minDex = -1;
 
@@ -238,6 +237,10 @@ public class GraphAlgorithms {
         return primkrusMatrix;
     }
 
+    public int[][] getFloydMatrix() {
+        return floydMatrix;
+    }
+
     public void printPKMatrix() { //prints the matrix used for prims and kruskals algorithm
         System.out.println("---The UWC matrix---");
 
@@ -258,10 +261,28 @@ public class GraphAlgorithms {
         }
         System.out.println();
     }
-    
-    public void printFloydMatrix(){
-        
+
+    public void printFloydMatrix() {
+        System.out.println("---The Floyd matrix---");
+
+        for (int k = 0; k < fwvertices.length; k++) {
+            System.out.print("  " + fwvertices[k] + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < floydMatrix.length; i++) {
+            System.out.print(fwvertices[i] + " ");
+            for (int j = 0; j < floydMatrix[i].length; j++) {
+
+                if (floydMatrix[i][j] == Integer.MAX_VALUE) {
+                    System.out.print("∞" + "  ");
+                } else {
+                    System.out.print(floydMatrix[i][j] + "  ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
+
 }
-
-

@@ -15,6 +15,8 @@ public class Main {
         grapher.readUWCMatrix();
         grapher.prim(grapher.getPKMatrix());
         grapher.kruskals(grapher.getPKMatrix());
+        grapher.readFloydMatrix();
+        
     }
     
 }
