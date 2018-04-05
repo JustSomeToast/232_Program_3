@@ -67,13 +67,13 @@ public class GraphAlgorithms {
 
     }
 
-    public void readFloydMatrix() {
+    public void readFloydMatrix() { //reads in the matrix used for floyd-warshall's algorithm
         Path in = Paths.get("floydMatrix.csv");
 
         try (BufferedReader reader = Files.newBufferedReader(in)) { //reader
             String line; //the line to be read
 
-            int i = 1; //vars for checking current line, and indexing values into primkrusMatrix
+            int i = 1; //vars for checking current line, and indexing values into arrays
             int j = 0, k = 0;
 
             while ((line = reader.readLine()) != null) {
@@ -85,7 +85,7 @@ public class GraphAlgorithms {
                     fwvertices = new char[inLine.length];
 
                     int b = 0;
-                    for (String c : inLine) { //insert our pkvertices into pkvertices
+                    for (String c : inLine) { //insert our vertices
                         fwvertices[b] = c.charAt(0);
                         b++;
                     }
@@ -99,7 +99,7 @@ public class GraphAlgorithms {
                             val = Integer.parseInt(c); //we have an edge
                         }
 
-                        floydMatrix[j][k] = val; //index the value into our primkrusMatrix
+                        floydMatrix[j][k] = val; //index the value 
                         k++;
                     }
                     k = 0;
@@ -230,23 +230,23 @@ public class GraphAlgorithms {
         System.out.println("Total MST Weight = " + totalWeight);
     }
 
-    public void floydWarshall(int mat[][]) {
-        int weights[][] = new int[mat.length][mat.length];
-        int len = mat.length;
-        int inf = Integer.MAX_VALUE;
+    public void floydWarshall(int mat[][]) { //floyd-warhsall's all shortes paths algorithm
+        int weights[][] = new int[mat.length][mat.length]; //create and array the same as our matrix
+        int len = mat.length; 
+        int inf = Integer.MAX_VALUE; //
 
-        for (int m = 0; m < len; m++) {
+        for (int m = 0; m < len; m++) { //copy our matrix into our array
             for (int n = 0; n < len; n++) {
                 weights[m][n] = mat[m][n];
             }
         }
 
-        for (int k = 0; k < len; k++) {
+        for (int k = 0; k < len; k++) { //triple nested loop for checking shortest paths between vertices
             for (int i = 0; i < len; i++) {
                 for (int j = 0; j < len; j++) {
-                    if (weights[i][k] != inf && weights[k][j] != inf && weights[i][j] > weights[i][k] + weights[k][j]) {
-                        weights[i][j] = weights[i][k] + weights[k][j];
-                        printFloydMatrix(weights);
+                    if (weights[i][k] != inf && weights[k][j] != inf && weights[i][j] > weights[i][k] + weights[k][j]) { //if we have a path
+                        weights[i][j] = weights[i][k] + weights[k][j]; //update the graph
+                        printFloydMatrix(weights); //print the changed graph
                     }
 
                 }
@@ -255,11 +255,11 @@ public class GraphAlgorithms {
 
     }
 
-    public int[][] getPKMatrix() {
+    public int[][] getPKMatrix() { //returns the matrix used for prim/kruskal
         return primkrusMatrix;
     }
 
-    public int[][] getFloydMatrix() {
+    public int[][] getFloydMatrix() { //returns the matrix used for floyd-warshall
         return floydMatrix;
     }
 
@@ -284,7 +284,7 @@ public class GraphAlgorithms {
         System.out.println();
     }
 
-    public void printFloydMatrix(int mtp[][]) {
+    public void printFloydMatrix(int mtp[][]) { //prints the matrix used for the floyd-warshall algorithm
         for (int k = 0; k < fwvertices.length; k++) {
             System.out.print("  " + fwvertices[k] + " ");
         }
