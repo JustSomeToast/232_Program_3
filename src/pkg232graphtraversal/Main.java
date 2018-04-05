@@ -13,8 +13,8 @@ public class Main {
     public static void main(String[] args) {
         GraphAlgorithms grapher = new GraphAlgorithms();
         grapher.readUWCMatrix();
-        grapher.prim(grapher.getMatrix());
-        grapher.kruskals(grapher.getMatrix());
+        grapher.prim(grapher.getPKMatrix());
+        grapher.kruskals(grapher.getPKMatrix());
     }
     
 }

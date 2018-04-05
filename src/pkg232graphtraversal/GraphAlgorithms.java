@@ -13,8 +13,9 @@ import java.nio.file.*;
 
 public class GraphAlgorithms {
 
-    private char[] vertices; //vertex vertices
+    private char[] pkvertices; // prim/kruskal vertex vertices
     private int[][] primkrusMatrix; //UWC primkrusMatrix, stored as ints
+    private char[] fwvertices; 
     private int[][] floydMatrix;
 
     public void readUWCMatrix() { //reads in an adjacency primkrusMatrix for prims and kruskal algorithms
@@ -33,11 +34,11 @@ public class GraphAlgorithms {
 
                 if (i == 1) { //if we are on the first line
                     primkrusMatrix = new int[inLine.length][inLine.length]; //initialize both arrays
-                    vertices = new char[inLine.length];
+                    pkvertices = new char[inLine.length];
 
                     int b = 0;
-                    for (String c : inLine) { //insert our vertices into vertices
-                        vertices[b] = c.charAt(0);
+                    for (String c : inLine) { //insert our pkvertices into pkvertices
+                        pkvertices[b] = c.charAt(0);
                         b++;
                     }
                 }
@@ -65,12 +66,57 @@ public class GraphAlgorithms {
         }
 
     }
+    
+    public void readFloydMatrix(){
+        Path in = Paths.get("floydMatrix.csv");
+        
+        
+        try (BufferedReader reader = Files.newBufferedReader(in)) { //reader
+            String line; //the line to be read
 
-<<<<<<< HEAD
+            int i = 1; //vars for checking current line, and indexing values into primkrusMatrix
+            int j = 0, k = 0;
+
+            while ((line = reader.readLine()) != null) {
+
+                String inLine[] = line.split(",");
+
+                if (i == 1) { //if we are on the first line
+                    floydMatrix = new int[inLine.length][inLine.length]; //initialize both arrays
+                    fwvertices = new char[inLine.length];
+
+                    int b = 0;
+                    for (String c : inLine) { //insert our pkvertices into pkvertices
+                        fwvertices[b] = c.charAt(0);
+                        b++;
+                    }
+                }
+                if (i > 1) { //if we are past the first line
+                    for (String c : inLine) {
+                        int val;
+                        if (c.equals("∞")) { //if we have an infinity (no edge)
+                            val = Integer.MAX_VALUE; //represent no edge as max value
+                        } else {
+                            val = Integer.parseInt(c); //we have an edge
+                        }
+
+                        floydMatrix[j][k] = val; //index the value into our primkrusMatrix
+                        k++;
+                    }
+                    k = 0;
+                    j++;
+                }
+                i++;
+            }
+        } catch (IOException e) {
+            System.err.format("An IOException occured when reading in from: " + in
+                    + '\n' + "Error: " + e);
+        }
+    }
+
+
     public int minVertKey(int k[], boolean t[]) { //finds the minimum weighted, unvisited edge and returns it
-=======
-    public int minVertKey(int k[], boolean t[]){ //finds the minimum weighted, unvisited edge and returns it 
->>>>>>> 0844aeb4929239163c387834fd49c8daf52e4bc7
+        
         int min = Integer.MAX_VALUE;
         int minDex = -1;
 
@@ -85,7 +131,7 @@ public class GraphAlgorithms {
 
     public char getVertex(int i) { //function for finding the corresponding vertex char from a given input
         char c;
-        c = vertices[i];
+        c = pkvertices[i];
 
         return c;
     }
@@ -106,13 +152,13 @@ public class GraphAlgorithms {
 
     public void prim(int mat[][]) { //prim's algorithm
         System.out.println("Running Prim's Algorithm...");
-        int v = mat.length;  //number of vertices in our matrix
+        int v = mat.length;  //number of pkvertices in our matrix
 
         int mst[] = new int[v]; //stores the MST
 
         int vertKeys[] = new int[v]; //values used as vertex keys
 
-        boolean treeSet[] = new boolean[v]; //vertices not yet in MST
+        boolean treeSet[] = new boolean[v]; //pkvertices not yet in MST
 
         for (int i = 0; i < v; i++) {  //initalize vertKeys and visits as infinite and false
             vertKeys[i] = Integer.MAX_VALUE;
@@ -144,7 +190,7 @@ public class GraphAlgorithms {
     public void kruskals(int mat[][]) {
         System.out.println("\nRunning Kruskal's Algorithm...");
 
-        int v = mat.length; //number of vertices in matrix
+        int v = mat.length; //number of pkvertices in matrix
         int edges = 0; //initialize number of edges in MST to 0
         int start = 0; //represents starting vertex
         int end = 0; //represents ending vertex
@@ -155,7 +201,7 @@ public class GraphAlgorithms {
         System.out.println("-------------------");
         System.out.println("Edge  Weight");
 
-        //number of edges is vertices - 1
+        //number of edges is pkvertices - 1
         while (edges < v - 1) {
             min = Integer.MAX_VALUE;
             for (int i = 0; i < v; i++) {
@@ -175,8 +221,8 @@ public class GraphAlgorithms {
             if (x != y) {
                 edges++;
                 totalWeight += min;
-                System.out.print(vertices[start]);
-                System.out.println(vertices[end] + "    " + min);
+                System.out.print(pkvertices[start]);
+                System.out.println(pkvertices[end] + "    " + min);
             }
             mat[start][end] = mat[end][start] = Integer.MAX_VALUE;
         }
@@ -188,15 +234,15 @@ public class GraphAlgorithms {
 
     }
 
-    public int[][] getMatrix() {
+    public int[][] getPKMatrix() {
         return primkrusMatrix;
     }
 
     public void printPKMatrix() { //prints the matrix used for prims and kruskals algorithm
         System.out.println("---The UWC matrix---");
 
-        for (int k = 0; k < vertices.length; k++) {
-            System.out.print(vertices[k] + "  ");
+        for (int k = 0; k < pkvertices.length; k++) {
+            System.out.print(pkvertices[k] + "  ");
         }
         System.out.println();
 
@@ -212,4 +258,10 @@ public class GraphAlgorithms {
         }
         System.out.println();
     }
+    
+    public void printFloydMatrix(){
+        
+    }
 }
+
+
