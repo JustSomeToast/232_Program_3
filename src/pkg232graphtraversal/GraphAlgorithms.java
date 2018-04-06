@@ -1,7 +1,10 @@
 /*
  * Author: Tyler Gentry, Gavin Austin
- * Date: 4/10/2018         
- * Overview:
+ * Date: 4/10/2018                
+ * Overview: Implementation of Prim's and Kruskal's algorithms for MST of a graph
+ * and implementation of Floyd-Warshall's algorithm in weighted graphs. Reads in from 
+ * an input file.
+ * Reads in from UWCMatrix.csv and floydMatrix.csv. Should be able to just run program and get output.
  * Open Project Properties to change this.
  */
 package pkg232graphtraversal;
@@ -136,7 +139,7 @@ public class GraphAlgorithms {
         return c;
     }
 
-    public void printMST(int p[], int mat[][]) { //fucntion for printing a MST
+    public void printPrimMST(int p[], int mat[][]) { //fucntion for printing a MST
         int mstWeight = 0;
 
         System.out.println("\nMST for the matrix");
@@ -156,34 +159,33 @@ public class GraphAlgorithms {
 
         int mst[] = new int[v]; //stores the MST
 
-        int vertKeys[] = new int[v]; //values used as vertex keys
+        int edgeKeys[] = new int[v]; //values used as edge keys
 
         boolean treeSet[] = new boolean[v]; //pkvertices not yet in MST
 
-        for (int i = 0; i < v; i++) {  //initalize vertKeys and visits as infinite and false
-            vertKeys[i] = Integer.MAX_VALUE;
+        for (int i = 0; i < v; i++) {  //initalize edgeKeys and visits as infinite and false
+            edgeKeys[i] = Integer.MAX_VALUE;
             treeSet[i] = false;
         }
 
-        vertKeys[0] = 0; //our starting vertex
+        edgeKeys[0] = 0; //our starting vertex
         mst[0] = -1; //root of MST
 
         for (int k = 0; k < v - 1; k++) {
-            int m = minVertKey(vertKeys, treeSet); //
+            int m = minVertKey(edgeKeys, treeSet); //
 
             treeSet[m] = true; //add the vertex to the visited tree
 
             for (int j = 0; j < v; j++) {
-                //if we have an edge, the vertex is not in our visited tree, and the edge is smaller than other found edges
-                if (mat[m][j] != Integer.MAX_VALUE && treeSet[j] == false
-                        && mat[m][j] < vertKeys[j]) {   
+                //if we have an edge, the vertex is not in our tree, and the edge is smaller than other connected edges
+                if (mat[m][j] != Integer.MAX_VALUE && treeSet[j] == false && mat[m][j] < edgeKeys[j]) {
                     mst[j] = m;
-                    vertKeys[j] = mat[m][j];
+                    edgeKeys[j] = mat[m][j];
                 }
             }
         }
         //print our MST
-        printMST(mst, mat);
+        printPrimMST(mst, mat);
 
     }
 
@@ -231,8 +233,9 @@ public class GraphAlgorithms {
     }
 
     public void floydWarshall(int mat[][]) { //floyd-warhsall's all shortes paths algorithm
+        System.out.println("Running Floyd-Warshall's algorithm...\n");
         int weights[][] = new int[mat.length][mat.length]; //create and array the same as our matrix
-        int len = mat.length; 
+        int len = mat.length;
         int inf = Integer.MAX_VALUE; //
 
         for (int m = 0; m < len; m++) { //copy our matrix into our array
