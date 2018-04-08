@@ -66,11 +66,8 @@ public class GraphAlgorithms {
 
     }
 
-<<<<<<< HEAD
     public int minVertKey(int k[], boolean t[]) { //finds the minimum weighted, unvisited edge and returns it
-=======
-    public int minVertKey(int k[], boolean t[]){ //finds the minimum weighted, unvisited edge and returns it 
->>>>>>> 0844aeb4929239163c387834fd49c8daf52e4bc7
+
         int min = Integer.MAX_VALUE;
         int minDex = -1;
 
@@ -142,21 +139,26 @@ public class GraphAlgorithms {
     }
 
     public void kruskals(int mat[][]) {
-        System.out.println("\nRunning Kruskal's Algorithm...");
-
         int v = mat.length; //number of vertices in matrix
         int edges = 0; //initialize number of edges in MST to 0
         int start = 0; //represents starting vertex
         int end = 0; //represents ending vertex
         int min;
         int totalWeight = 0;
+        char startAddedVertices[] = new char[v - 1]; //stores starting vertices of edges
+        char endAddedVertices[] = new char[v - 1]; //stores ending vertices of edges
+        char notFound[] = new char[v];  //vertices that have not been used
+        char lastEdge1 = ' ';
+        char lastEdge2 = ' ';
+        int lastEdgeWeight = 0;
 
+        System.out.println("\nRunning Kruskal's Algorithm...");
         System.out.println("\nMST for the matrix");
         System.out.println("-------------------");
         System.out.println("Edge  Weight");
 
-        //number of edges is vertices - 1
-        while (edges < v - 1) {
+        //finds min value in matrix
+        while (edges < v - 2) {
             min = Integer.MAX_VALUE;
             for (int i = 0; i < v; i++) {
                 for (int j = 0; j < v; j++) {
@@ -169,19 +171,117 @@ public class GraphAlgorithms {
                 }
             }
 
-            //check that including edge doesn't cause circuit
-            int x = start;
-            int y = end;
-            if (x != y) {
+            int num = 0;
+            int num2 = 0;
+            //checks if adding edge will form circuit
+            for (int i = 0; i < v - 1; i++) {
+                if (startAddedVertices[i] == vertices[start] && (num == 0 || num == 1)) {
+                    num++;
+                    //don't add edge
+                }
+                if (endAddedVertices[i] == vertices[start] && (num == 0 || num == 1)) {
+                    num++;
+                    //don't add edge
+                }
+                if (startAddedVertices[i] == vertices[end] && (num2 == 0 || num2 == 1)) {
+                    num2++;
+                    //don't add edge
+                }
+                if (endAddedVertices[i] == vertices[end] && (num2 == 0 || num2 == 1)) {
+                    num2++;
+                    //don't add edge
+                }
+            }
+
+            //adds edge to MST if it doesn't form circuit
+            if (num < 2 && num2 < 2) {
+                int counter = 0;
+                while (startAddedVertices[counter] != 0) {
+                    counter++;
+                }
+                startAddedVertices[counter] = vertices[start];
+                counter = 0;
+                while (endAddedVertices[counter] != 0) {
+                    counter++;
+                }
+                endAddedVertices[counter] = vertices[end];
                 edges++;
                 totalWeight += min;
                 System.out.print(vertices[start]);
                 System.out.println(vertices[end] + "    " + min);
             }
+
+            int count = 0;
+            //checks number of edges added to MST
+            while (startAddedVertices[count] != 0) {
+                count++;
+            }
+
+            //finds last edge to add
+            int count2 = 0;
+            if (count == v - 2) {
+                for (int i = 0; i < v; i++) {
+                    if (found(startAddedVertices, vertices[i])) {
+                        //do nothing
+                    } else {
+                        notFound[count2] = vertices[i];
+                        count2++;
+                    }
+                    if (found(endAddedVertices, vertices[i])) {
+                        //do nothing
+                    } else {
+                        notFound[count2] = vertices[i];
+                        count2++;
+                    }
+                }
+            }
+
+            //finds keys of vertices and weight of last edge
+            char repeated = findRepeating(notFound, notFound.length);
+            int column = 0;
+            for (int i = 0; i < v; i++) {
+                if (repeated == vertices[i]) {
+                    column = i;
+                }
+            }
+            int minValue = Integer.MAX_VALUE;
+            for (int i = 0; i < v; i++) {
+                if (mat[column][i] < minValue) {
+                    minValue = mat[column][i];
+                    lastEdge1 = vertices[column];
+                    lastEdge2 = vertices[i];
+                    lastEdgeWeight = mat[column][i];
+                }
+            }
             mat[start][end] = mat[end][start] = Integer.MAX_VALUE;
         }
+        System.out.println(lastEdge1 + "" + lastEdge2 + "    " + lastEdgeWeight);
+        totalWeight += lastEdgeWeight;
+
         System.out.println("-------------------");
         System.out.println("Total MST Weight = " + totalWeight);
+    }
+
+    char findRepeating(char arr[], int size) {
+        int i, j;
+        char repeated = ' ';
+        for (i = 0; i < size; i++) {
+            for (j = i + 1; j < size; j++) {
+                if (arr[i] == arr[j]) {
+                    repeated = arr[i];
+                }
+            }
+        }
+        return repeated;
+    }
+
+    public boolean found(char arr[], char vertex) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == vertex) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void floydWarshall() {
